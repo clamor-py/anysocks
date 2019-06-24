@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 import sys
 from pathlib import Path
@@ -8,13 +10,13 @@ ROOT = Path(__file__).parent
 if sys.version_info < (3, 5):
     raise SystemExit('This requires Python 3.5+')
 
-with open(ROOT / 'anysocks' / 'meta.py', encoding='utf-8') as f:
+with open(str(ROOT / 'anysocks' / 'meta.py'), encoding='utf-8') as f:
     VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
-with open(ROOT / 'README.md', encoding='utf-8') as f:
+with open(str(ROOT / 'README.md'), encoding='utf-8') as f:
     README = f.read()
 
-with open(ROOT / 'requirements.txt', encoding='utf-8') as f:
+with open(str(ROOT / 'requirements.txt'), encoding='utf-8') as f:
     REQUIREMENTS = f.read().splitlines()
 
 
