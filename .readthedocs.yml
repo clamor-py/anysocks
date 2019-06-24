@@ -1,0 +1,8 @@
+formats:
+  - htmlzip
+  - epub
+
+build:
+  image: latest
+
+requirements_file: .readthedocs/requirements.txt
