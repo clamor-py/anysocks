@@ -27,9 +27,9 @@ from wsproto.events import (
 from yarl import URL
 
 __all__ = (
+    'WebSocketConnection',
     'open_websocket',
     'create_websocket',
-    'WebSocketConnection',
 )
 
 logger = logging.getLogger(__name__)
@@ -57,6 +57,30 @@ class HandshakeError(AnysocksError):
 class TimeoutError(AnysocksError):
     """A timeout occurred while attempting to connect or disconnect."""
     pass
+
+
+# TODO: Documentation.
+class WebSocketConnection:
+    """"""
+
+    _scope = None
+    _sock = None
+    _connection = None
+
+    CONNECTION_ID = itertools.count()
+
+    def __init__(self,
+                 stream: anyio.abc.SocketStream,
+                 wsproto: WSConnection,
+                 *,
+                 host: str = None,
+                 path: str = None,
+                 subprotocols: Optional[list] = None,
+                 headers: Optional[list] = None,
+                 message_queue_size: int = MESSAGE_QUEUE_SIZE,
+                 max_message_size: int = MAX_MESSAGE_SIZE):
+        # TODO: Implementation.
+        pass
 
 
 @asynccontextmanager
@@ -224,27 +248,3 @@ def _url_to_host(url, ssl_context):
         raise ValueError('SSL context must be None for "ws:" URL scheme')
 
     return url.host, url.port, url.path_qs, ssl_context
-
-
-# TODO: Documentation.
-class WebSocketConnection:
-    """"""
-
-    _scope = None
-    _sock = None
-    _connection = None
-
-    CONNECTION_ID = itertools.count()
-
-    def __init__(self,
-                 stream: anyio.abc.SocketStream,
-                 wsproto: WSConnection,
-                 *,
-                 host: str = None,
-                 path: str = None,
-                 subprotocols: Optional[list] = None,
-                 headers: Optional[list] = None,
-                 message_queue_size: int = MESSAGE_QUEUE_SIZE,
-                 max_message_size: int = MAX_MESSAGE_SIZE):
-        # TODO: Implementation.
-        pass
