@@ -140,9 +140,9 @@ async def create_websocket(task_group: anyio.TaskGroup,
                            *,
                            use_ssl: Union[bool, ssl.SSLContext],
                            subprotocols: Optional[list] = None,
-                           headers: Opional[list] = None,
+                           headers: Optional[list] = None,
                            message_queue_size: int = MESSAGE_QUEUE_SIZE,
-                           max_message_size: int = MAX_MESSAGE_SIZE) -> WebSocketClient:
+                           max_message_size: int = MAX_MESSAGE_SIZE) -> WebSocketConnection:
     """A more low-level version of :func:`open_websocket`.
 
     .. warning::
@@ -195,7 +195,8 @@ async def create_websocket(task_group: anyio.TaskGroup,
     logger.debug('Connecting to %s...', url)
 
     tls = True if ssl_context else False
-    stream = anyio.connect_tcp(host, port, ssl_context=ssl_context, autostart_tls=tls, tls_standard_compatible=tls)
+    stream = anyio.connect_tcp(
+        host, port, ssl_context=ssl_context, autostart_tls=tls, tls_standard_compatible=tls)
     if port in (80, 443):
         host_header = host
     else:
