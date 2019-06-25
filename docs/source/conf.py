@@ -212,6 +212,7 @@ extlinks = {
 # sphinx.ext.intersphinx
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
+    'anyio': ('https://anyio.readthedocs.io/en/latest', None),
 }
 
 # sphinx.ext.todo

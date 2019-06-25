@@ -10,6 +10,7 @@ WebSocket client implementation for anyio.
 :license: MIT, see LICENSE for more details.
 """
 
+from .client import *
 from .meta import *
 
 import logging
@@ -17,3 +18,10 @@ import logging
 fmt = '[%(levelname)s] %(asctime)s - %(name)s:%(lineno)d - %(message)s'
 logging.basicConfig(format=fmt, level=logging.INFO)
 logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+try:
+    import curio.meta
+
+    curio.meta.safe_generator(open_websocket.__wrapped__)
+except ImportError:
+    pass
