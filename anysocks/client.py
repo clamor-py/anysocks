@@ -5,7 +5,7 @@ import ssl
 from typing import Optional, Union
 
 import anyio.abc
-from async_generator import asynccontextmanager
+from async_generator import async_generator, asynccontextmanager, yield_
 from wsproto import ConnectionType, WSConnection
 from yarl import URL
 
@@ -21,9 +21,10 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
+@async_generator
 async def open_connection(url: str,
                           *,
-                          use_ssl: Union[bool, ssl.SSLContext],
+                          use_ssl: Union[bool, ssl.SSLContext] = None,
                           subprotocols: Optional[list] = None,
                           headers: Optional[list] = None,
                           message_queue_size: Optional[int] = MESSAGE_QUEUE_SIZE,
@@ -76,7 +77,7 @@ async def open_connection(url: str,
 
     async with anyio.create_task_group() as task_group:
         try:
-            with anyio.fail_after(connect_timeout):
+            async with anyio.fail_after(connect_timeout):
                 websocket = await create_websocket(
                     task_group, url, use_ssl=use_ssl, subprotocols=subprotocols, headers=headers,
                     message_queue_size=message_queue_size, max_message_size=max_message_size
@@ -87,10 +88,10 @@ async def open_connection(url: str,
             raise HandshakeError from exception
 
         try:
-            yield websocket
+            await yield_(websocket)
         finally:
             try:
-                with anyio.fail_after(disconnect_timeout):
+                async with anyio.fail_after(disconnect_timeout):
                     await websocket.close()
             except TimeoutError:
                 raise TimeoutError from None
@@ -157,7 +158,7 @@ async def create_websocket(task_group: anyio.TaskGroup,
 
     tls = True if ssl_context else False
     stream = await anyio.connect_tcp(
-        host, port, ssl_context=ssl_context, autostart_tls=tls, tls_standard_compatible=tls)
+        host, int(port), ssl_context=ssl_context, autostart_tls=tls, tls_standard_compatible=False)
     if port in (80, 443):
         host_header = host
     else:

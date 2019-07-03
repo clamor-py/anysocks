@@ -129,16 +129,19 @@ class WebSocketConnection:
         self._reject_headers = None
         self._reject_body = b''
 
-        self._stream_lock = anyio.Lock()
+        self._stream_lock = anyio.create_lock()
         self._message_size = 0
         self._message_parts = []
-        self._event_queue = anyio.Queue()
+        self._event_queue = anyio.create_queue(self.message_queue_size)
         self._pings = OrderedDict()
-        self._open_handshake = anyio.Event()
-        self._close_handshake = anyio.Event()
+        self._open_handshake = anyio.create_event()
+        self._close_handshake = anyio.create_event()
 
     def __str__(self):
-        return '{0._wsproto.client}-{0.id}'.format(self)
+        return '{}-{}'.format(
+            'client' if self._wsproto.client else 'server',
+            self.id
+        )
 
     @property
     def closed(self) -> bool:
@@ -192,27 +195,13 @@ class WebSocketConnection:
 
         return self._path
 
-    async def poll_event(self) -> Event:
-        """Polls for the next event and returns the received data."""
+    async def get_message(self) -> Union[bytes, str]:
+        """Polls for the next message and returns its data."""
 
         if self._closed:
             raise ConnectionClosed(self._close_code, self._close_reason)
 
-        event = await self._event_queue.get()
-        if event is CloseConnection:
-            raise ConnectionClosed(event.code, event.reason)
-
-        return event
-
-    async def get_message(self) -> Union[bytes, str]:
-        """Polls for the next message and returns its data."""
-
-        event = await self.poll_event()
-        if isinstance(event, TextMessage):
-            return event.data
-
-        elif isinstance(event, BytesMessage):
-            return bytes(event.data)
+        return await self._event_queue.get()
 
     async def ping(self, payload: bytes = None):
         """Sends a WebSocket ping frame to the peer and waits for a pong.
@@ -422,9 +411,9 @@ class WebSocketConnection:
     async def _do_handshake(self):
         try:
             handshake = Request(
-                host=self._host,
-                target=self._path,
-                subprotocols=self._subprotocols,
+                host=self.host,
+                target=self.path,
+                subprotocols=self._subprotocols or [],
                 extra_headers=self._headers or []
             )
             await self._send(handshake)
@@ -444,7 +433,7 @@ class WebSocketConnection:
             # If TCP closed before WebSocket, it is abnormal closure.
             if self.state is not ConnectionState.CLOSED:
                 await self._abort_websocket()
-                raise AnySocksError()
+            raise AnySocksError()
 
         else:
             logger.debug('%s received %d bytes', self, len(data))

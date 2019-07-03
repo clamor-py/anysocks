@@ -24,6 +24,6 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 try:
     import curio.meta
 
-    curio.meta.safe_generator(open_websocket.__wrapped__)
+    curio.meta.safe_generator(open_connection.__wrapped__)
 except ImportError:
     pass
