@@ -37,6 +37,7 @@ script:
   - cd docs && make html
 
 after_script:
+  - coverage xml
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 deploy:

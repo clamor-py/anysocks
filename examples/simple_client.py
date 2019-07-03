@@ -1,6 +1,5 @@
 import anyio
 from anysocks import open_connection
-from anysocks.websocket import WebSocketConnection
 
 
 async def main():
