@@ -71,6 +71,7 @@ WebSocketConnection
 ~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: anysocks.websocket.WebSocketConnection
+    :members:
 
 .. _exceptions:
 
@@ -102,3 +103,4 @@ ConnectionClosed
 ~~~~~~~~~~~~~~~~
 
 .. autoexception:: anysocks.exceptions.ConnectionClosed
+    :members:
