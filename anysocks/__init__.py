@@ -10,6 +10,8 @@ WebSocket client implementation for anyio.
 :license: MIT, see LICENSE for more details.
 """
 
+from . import exceptions
+from . import websocket
 from .client import *
 from .meta import *
 
