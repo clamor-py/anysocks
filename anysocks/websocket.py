@@ -150,7 +150,7 @@ class WebSocketConnection:
         return self._closed
 
     @property
-    def close_code(self) -> int:
+    def close_code(self) -> Optional[CloseReason]:
         """Returns the close code of the connection.
 
         ``None`` if the connection isn't closed.
@@ -159,7 +159,7 @@ class WebSocketConnection:
         return self._close_code
 
     @property
-    def close_reason(self) -> str:
+    def close_reason(self) -> Optional[str]:
         """Returns the close reason of the connection.
 
         ``None`` if the connection isn't closed.
@@ -194,6 +194,12 @@ class WebSocketConnection:
         """The requested URL path."""
 
         return self._path
+
+    @property
+    def subprotocol(self) -> Optional[str]:
+        """The underlying subprotocol of the connection."""
+
+        return self._connection_subprotocol
 
     async def get_message(self) -> Union[bytes, str]:
         """Polls for the next message and returns its data."""
