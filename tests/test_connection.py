@@ -104,7 +104,7 @@ class ConnectionTests(unittest.TestCase):
         async def test():
             try:
                 async with open_connection('http://foo.bar/baz') as con:
-                    pass
+                    self.assertIsInstance(con, WebSocketConnection)
             except ValueError:
                 # ValueError tells us that our WebSocket URI
                 # doesn't have a "ws" or "wss" scheme, so

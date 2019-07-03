@@ -5,7 +5,6 @@ from anysocks.websocket import WebSocketConnection
 
 async def main():
     async with open_connection('ws://echo.websocket.org') as con:
-        con: WebSocketConnection
         print('Connection established!')
 
         # First, let's send some text to the server.
