@@ -35,18 +35,18 @@ from anysocks import open_connection
 
 
 async def main():
-    async with open_connection('ws://localhost:5000/') as con:
+    async with open_connection('wss://echo.websocket.org') as con:
         print('Connection established!')
 
         # First, let's send some text to the server.
-        text = input('What to send?')
+        text = input('What to send? ')
         await con.send(text)
 
         # Now, we receive and verify the server's response.
         message = await con.get_message()
         assert message == text, "Received {}, expected {}".format(message, text)
 
-    print('Connection closed with code {}', con.close_code)
+    print('Connection closed with code {}', con.close_code.value)
 
 anyio.run(main)
 ```
