@@ -47,25 +47,25 @@ RECEIVE_BYTES = 4 * 2 ** 10  # 4 Kb
 class WebSocketConnection:
     """A wrapper around WebSocket connections.
 
-    .. warning::
+    .. note::
 
         This class has some tricky internal logic.
         That's why it is strongly discouraged to directly
         instantiate objects.
-        Use the convenience functions, such as :func:`open_connection`,
-        instead.
+        Use the convenience functions, such as
+        :func:`~anysocks.client.open_connection`, instead.
 
     .. warning::
 
-        This only supports client connections!
+        This only supports client connections at the moment!
 
     Parameters
     ----------
     stream : :class:`SocketStream<anyio:anyio.abc.SocketStream>`
         The socket stream.
-    wsproto : :class:`wsproto.WSConnection`
+    wsproto : :class:`WSConnection<wsproto:wsproto.WSConnection>`
         The connection type abstraction. This should always be
-        ``wsproto.WSConnection(wsproto.ConnectionType.CLIENT)``.
+        ``WSConnection(ConnectionType.CLIENT)``.
     host : str
         The hostname to connect to.
     path : str
@@ -154,6 +154,11 @@ class WebSocketConnection:
         """Returns the close code of the connection.
 
         ``None`` if the connection isn't closed.
+
+        Returns
+        -------
+        Optional[:class:`CloseReason<wsproto:wsproto.frame_protocol.CloseReason>`]
+            The close code.
         """
 
         return self._close_code
@@ -179,7 +184,13 @@ class WebSocketConnection:
 
     @property
     def state(self) -> ConnectionState:
-        """The current connection state."""
+        """The current connection state.
+
+        Returns
+        -------
+        :class:`ConnectionState<wsproto:wsproto.connection.ConnectionState>`
+            The connection state.
+        """
 
         return self._wsproto.state
 
@@ -230,7 +241,7 @@ class WebSocketConnection:
 
         Raises
         ------
-        :exc:`ConnectionClosed`
+        :exc:`anysocks.exceptions.ConnectionClosed`
             If the connection is already closed.
         :exc:`ValueError`
             If ``payload`` is identical to another in-flight ping.
@@ -260,7 +271,7 @@ class WebSocketConnection:
 
         Raises
         ------
-        :exc:`ConnectionClosed`
+        :exc:`anysocks.exceptions.ConnectionClosed`
             If the connection is already closed.
         :exc:`ValueError`
             If the type of ``message`` isn't ``str`` or ``bytes``.
@@ -284,7 +295,7 @@ class WebSocketConnection:
         This sends a closing frame and suspends until the connection is closed.
         After calling this method, any further I/O on this WebSocket, e.g.
         :meth:`~WebSocketConnection.get_message` will raise
-        :exc:`ConnectionClosed`.
+        :exc:`~anysocks.exceptions.ConnectionClosed`.
 
         Parameters
         ----------

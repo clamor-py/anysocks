@@ -4,7 +4,7 @@
 anysocks
 ~~~~~~~~
 
-WebSocket client implementation for anyio.
+WebSocket protocol implementation for anyio
 
 :copyright: (c) 2019 Valentin B.
 :license: MIT, see LICENSE for more details.

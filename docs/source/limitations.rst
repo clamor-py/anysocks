@@ -5,7 +5,7 @@ Limitations
 
 ``anysocks`` currently has a few limitations users have to deal with.
 
-- There may be more than once connection to a given IP address in a ``CONNECTING`` state.
+- There may be more than one connection to a given IP address in a ``CONNECTING`` state.
 
 - The client doesn't support connecting through a proxy.
 

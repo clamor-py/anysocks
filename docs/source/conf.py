@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = u'anysocks'
-copyright = u'2019, Valentin B.'
+copyright = u'2019, Valentin B'
 author = u'Valentin B.'
 
 # The short X.Y version
@@ -207,6 +207,7 @@ extlinks = {
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'anyio': ('https://anyio.readthedocs.io/en/latest', None),
+    'wsproto': ('https://wsproto.readthedocs.io/en/latest', None),
 }
 
 # sphinx.ext.todo

@@ -36,14 +36,14 @@ async def open_connection(url: str,
     .. note::
 
         This is an asynchronous contextmanager. It connects to the host
-        on entering and disconnects on exiting. It yields a :class:`WebSocketConnection`
-        instance.
+        on entering and disconnects on exiting. It yields a
+        :class:`~anysocks.websocket.WebSocketConnection` instance.
 
     Parameters
     ----------
     url : str
         The URL to connect to.
-    use_ssl : bool, ssl.SSLContext
+    use_ssl : Union[bool, ssl.SSLContext]
         If you want to specify your own context, pass it as an argument.
         If you want to use the default context, set this to ``True``.
         ``False`` disables SSL.
@@ -71,7 +71,7 @@ async def open_connection(url: str,
     ------
     :exc:`TimeoutError`
         Raised for a connection timeout. See ``connect_timeout`` and ``disconnect_timeout``.
-    :exc:`HandshakeError`
+    :exc:`anysocks.exceptions.HandshakeError`
         Raised for any networking errors.
     """
 
@@ -115,11 +115,11 @@ async def create_websocket(task_group: anyio.TaskGroup,
 
     Parameters
     ----------
-    task_group : :class:`TaskGroup<anyio:anyio.TaskGroup>`
+    task_group : :class:`TaskGroup<anyio:anyio.abc.TaskGroup>`
         The task group to run background tasks in.
     url : str
         The URL to connect to.
-    use_ssl : bool, ssl.SSLContext
+    use_ssl : Union[bool, ssl.SSLContext]
         If you want to specify your own context, pass it as an argument.
         If you want to use the default context, set this to ``True``.
         ``False`` disables SSL.
@@ -139,8 +139,13 @@ async def create_websocket(task_group: anyio.TaskGroup,
 
     Returns
     -------
-    :class:`WebSocketConnection`
+    :class:`~anysocks.websocket.WebSocketConnection`
         The newly created WebSocket client connection.
+
+    Raises
+    ------
+    :exc:`TypeError`
+        Raised for unsupported arguments to ``use_ssl``.
     """
 
     host, port, resource, use_ssl = _url_to_host(url, use_ssl)
