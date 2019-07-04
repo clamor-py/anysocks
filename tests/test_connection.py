@@ -159,7 +159,7 @@ class ConnectionTests(unittest.TestCase):
             try:
                 await con.get_message()
             except ConnectionClosed as error:
-                self.assertEqual(error.name, 'RFC_RESERVED')
+                self.assertEqual(error.name, 'NORMAL_CLOSURE')
                 self.assertEqual(error.code, 1000)
                 self.assertEqual(error.reason, '')
 
