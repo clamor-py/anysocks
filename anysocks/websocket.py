@@ -312,8 +312,7 @@ class WebSocketConnection:
 
         self._closed = True
 
-        self._close_code = code
-        self._close_reason = reason
+        await self._close_websocket(code, reason)
 
         try:
             if self.state is ConnectionState.OPEN:
@@ -343,7 +342,10 @@ class WebSocketConnection:
         self._reader_running = False
         await self._stream.close()
 
-    async def _close_websocket(self, code: int, reason: str = None):
+    async def _close_websocket(self, code: Union[CloseReason, int], reason: str = None):
+        if isinstance(code, int):
+            code = CloseReason(code)
+
         self._close_code = code
         self._close_reason = reason
         logger.debug('%s closed by %r', self, ConnectionClosed(code, reason))
