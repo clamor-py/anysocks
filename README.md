@@ -6,8 +6,8 @@ I/O is handled by the [anyio project](https://github.com/agronholm/anyio) which 
 [![Build Status](https://travis-ci.org/shitcord/anysocks.svg?branch=master)](https://travis-ci.org/shitcord/anysocks)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6f883d197ca32802380c/maintainability)](https://codeclimate.com/github/shitcord/anysocks/maintainability)
 [![CodeFactor](https://www.codefactor.io/repository/github/shitcord/anysocks/badge)](https://www.codefactor.io/repository/github/shitcord/anysocks)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6f883d197ca32802380c/test_coverage)](https://codeclimate.com/github/shitcord/anysocks/test_coverage)
 [![Documentation Status](https://readthedocs.org/projects/anysocks/badge/?version=latest)](https://anysocks.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://badge.fury.io/py/anysocks.svg)](https://badge.fury.io/py/anysocks)
 
 ## Installation
 

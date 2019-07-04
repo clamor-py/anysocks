@@ -19,11 +19,6 @@ install:
   - pip install -e .
   - pip install -U -r .readthedocs/requirements.txt
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
 script:
   # Linting
   - pylama .
@@ -36,14 +31,11 @@ script:
   # Build docs
   - cd docs && make html
 
-after_script:
-  - coverage xml
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
 deploy:
   provider: pypi
   user: "vbe0201"
   password:
     secure: "ELGEQRqbnLRWZJyMvZ1ylhRbBeiurpR4jO8TQ8tWvaDUhuo5ix8qYUHrXQYJU0UYAVEW1Ua6c3IBsHM7HQ1/WWL2CvuJkyIMoqwZk8CV1MQ8izIAIW9lInErdioMqcuTt8Gip+bba5hrIACy17iz8Ztw6a+33GHhLBfReGnjDSAORhp3WmzFUjh6WgLtSsbd5z3ql0jpWGe/zK9AhNYOjlKh1/CQeWw+Gkezxhjx66xZ4lZDptgUe4jhdkgYSEWs6XFmpndgBw8lssxjT9iavY0XHSVQEN92NFcqkUJwem8k45gX/Jg6AgvnypLa8Y17CJ5FT6BugSKwKyiI2xhlsioUq92c72BshYJ/zWgcxWskILXd8mlzwcZ+kbMNqjYaX4Fxj8e9NBbKl48NpkQfAXItLDs9vKK/nmVASf2o5ty/dODKDiOQKOUrSv+s+wQrF24XMK6XeD1l+BlCmul5KM9Eol/xHUuW3px3oPEJ13AZopJRJcz2eRLt6iumvqwT7WaglDOHQ1R2vXOIWGf/SwuHJaFnL+8cgDCB8zB3mwhVDfDHCZd/XYy+y9Wm+KiHLgG4nIGxsAWeGuGG2XoTJO5ZRGS+HxReN1PhU0hvq5ilNMpQ8vNlgFVEc4nRPpQFZKoImphdzpg5WgYtDap1A2Pv31FnQBJ34GX3mtb8Jx0="
+  skip_existing: true
   on:
     tags: true
