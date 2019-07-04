@@ -29,7 +29,7 @@ script:
   - coverage report -i
 
   # Build docs
-  - cd docs && make html
+  - make -C docs html
 
 deploy:
   provider: pypi
