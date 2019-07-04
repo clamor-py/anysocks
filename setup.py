@@ -26,7 +26,7 @@ setup(
     author_email='valentin.be@protonmail.com',
     url='https://github.com/shitcord/anysocks',
     license='MIT',
-    description='WebSocket client implementation for anyio',
+    description='WebSocket protocol implementation for anyio',
     long_description=README,
     long_description_content_type='text/markdown',
     project_urls={
@@ -41,7 +41,7 @@ setup(
     python_requires='>=3.5.0',
     keywords='anysocks websockets websocket client library anyio',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
