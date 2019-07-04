@@ -161,6 +161,6 @@ class ConnectionTests(unittest.TestCase):
             except ConnectionClosed as error:
                 self.assertEqual(error.name, 'NORMAL_CLOSURE')
                 self.assertEqual(error.code, 1000)
-                self.assertEqual(error.reason, '')
+                self.assertEqual(error.reason, None)
 
         anyio.run(test)
