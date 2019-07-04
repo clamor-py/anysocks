@@ -147,7 +147,7 @@ class ConnectionTests(unittest.TestCase):
 
         anyio.run(test)
 
-    async def test_connection_8(self):
+    def test_connection_8(self):
         async def test():
             async with open_connection('wss://echo.websocket.org') as con:
                 self.assertIsInstance(con, WebSocketConnection)
