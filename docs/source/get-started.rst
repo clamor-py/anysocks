@@ -21,7 +21,7 @@ There are multiple ways of installing ``anysocks``:
     pip install anysocks
 
     # The cutting edge development version from GitHub:
-    pip install git+https://github.com/shitcord/anysocks@master#egg=anysocks
+    pip install git+https://github.com/clamor-py/anysocks@master#egg=anysocks
 
 Basic example
 -------------

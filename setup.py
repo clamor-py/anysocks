@@ -24,15 +24,15 @@ setup(
     name='anysocks',
     author='Valentin B.',
     author_email='valentin.be@protonmail.com',
-    url='https://github.com/shitcord/anysocks',
+    url='https://github.com/clamor-py/anysocks',
     license='MIT',
     description='WebSocket protocol implementation for anyio',
     long_description=README,
     long_description_content_type='text/markdown',
     project_urls={
         'Documentation': 'https://anysocks.readthedocs.io/en/latest',
-        'Source': 'https://github.com/shitcord/anysocks',
-        'Issue tracker': 'https://github.com/shitcord/anysocks/issues'
+        'Source': 'https://github.com/clamor-py/anysocks',
+        'Issue tracker': 'https://github.com/clamor-py/anysocks/issues'
     },
     version=VERSION,
     packages=['anysocks'],

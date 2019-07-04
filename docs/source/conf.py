@@ -200,7 +200,7 @@ autosummary_generate = True
 
 # sphinx.ext.extlinks
 extlinks = {
-    'issue': ('https://github.com/shitcord/anysocks/issues/%s', 'Issue '),
+    'issue': ('https://github.com/clamor-py/anysocks/issues/%s', 'Issue '),
 }
 
 # sphinx.ext.intersphinx
