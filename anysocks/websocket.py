@@ -43,6 +43,14 @@ MESSAGE_QUEUE_SIZE = 1
 MAX_MESSAGE_SIZE = 2 ** 20  # 1 Mb
 RECEIVE_BYTES = 4 * 2 ** 10  # 4 Kb
 
+# To prevent a race condition where WebSocketConnection.get_message
+# would try to poll data from an empty _event_queue when the
+# connection is already closed, we inject this into the queue and
+# use the isinstance check to determine whether the connection is
+# closed or not, because _event_queue only holds str or byte types
+# for actual data polled from the WebSocket.
+_CLOSE_MESSAGE = object()
+
 
 class WebSocketConnection:
     """A wrapper around WebSocket connections.
@@ -218,7 +226,14 @@ class WebSocketConnection:
         if self._closed:
             raise ConnectionClosed(self._close_code, self._close_reason)
 
-        return await self._event_queue.get()
+        message = await self._event_queue.get()
+        if not isinstance(message, (str, bytes)) or self._closed:
+            # Not receiving str or byte types from the _event_queue
+            # means that we've polled the _CLOSE_MESSAGE object,
+            # so we raise ConnectionClosed.
+            raise ConnectionClosed(self._close_code, self._close_reason)
+
+        return message
 
     async def ping(self, payload: bytes = None):
         """Sends a WebSocket ping frame to the peer and waits for a pong.
@@ -345,6 +360,8 @@ class WebSocketConnection:
     async def _close_websocket(self, code: Union[CloseReason, int], reason: str = None):
         if isinstance(code, int):
             code = CloseReason(code)
+
+        self._event_queue.put(_CLOSE_MESSAGE)
 
         self._close_code = code
         self._close_reason = reason
