@@ -227,10 +227,9 @@ class WebSocketConnection:
             raise ConnectionClosed(self._close_code, self._close_reason)
 
         message = await self._event_queue.get()
-        if not isinstance(message, (str, bytes)) or self._closed:
-            # Not receiving str or byte types from the _event_queue
-            # means that we've polled the _CLOSE_MESSAGE object,
-            # so we raise ConnectionClosed.
+        if self._closed:
+            # In case of a connection closure, the polled message
+            # is just the _CLOSE_MESSAGE object.
             raise ConnectionClosed(self._close_code, self._close_reason)
 
         return message
