@@ -276,7 +276,7 @@ class WebSocketConnection:
         await self._send(Ping(payload=payload))
         await event.wait()
 
-    async def send(self, message: Union[bytes, str]):
+    async def send_message(self, message: Union[bytes, str]):
         """Sends a WebSocket message to the peer.
 
         Parameters

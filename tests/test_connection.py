@@ -21,7 +21,7 @@ class ConnectionTests(unittest.TestCase):
                 assert str(con).startswith('client-')
                 self.assertIsNone(con.subprotocol)
 
-                await con.send(data)
+                await con.send_message(data)
                 message = await con.get_message()
 
                 self.assertEqual(message, data)
@@ -45,7 +45,7 @@ class ConnectionTests(unittest.TestCase):
                 assert str(con).startswith('client-')
                 self.assertIsNone(con.subprotocol)
 
-                await con.send(data)
+                await con.send_message(data)
                 message = await con.get_message()
 
                 self.assertEqual(message, data)
@@ -66,7 +66,7 @@ class ConnectionTests(unittest.TestCase):
                 assert str(con).startswith('client-')
                 self.assertIsNone(con.subprotocol)
 
-                await con.send(data)
+                await con.send_message(data)
                 message = await con.get_message()
 
                 self.assertEqual(message, data)
@@ -90,7 +90,7 @@ class ConnectionTests(unittest.TestCase):
                 assert str(con).startswith('client-')
                 self.assertIsNone(con.subprotocol)
 
-                await con.send(data)
+                await con.send_message(data)
                 message = await con.get_message()
 
                 self.assertEqual(message, data)

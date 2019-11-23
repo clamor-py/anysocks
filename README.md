@@ -40,7 +40,7 @@ async def main():
 
         # First, let's send some text to the server.
         text = input('What to send? ')
-        await con.send(text)
+        await con.send_message(text)
 
         # Now, we receive and verify the server's response.
         message = await con.get_message()
