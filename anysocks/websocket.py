@@ -16,6 +16,7 @@ from wsproto.events import (
     BytesMessage,
     CloseConnection,
     Event,
+    Message,
     Ping,
     Pong,
     RejectConnection,
@@ -356,11 +357,11 @@ class WebSocketConnection:
         self._reader_running = False
         await self._stream.close()
 
-    async def _close_websocket(self, code: Union[CloseReason, int], reason: str = None):
+    async def _close_websocket(self, code: Union[CloseReason, int], reason: str = ''):
         if isinstance(code, int):
             code = CloseReason(code)
 
-        self._event_queue.put(_CLOSE_MESSAGE)
+        await self._event_queue.put(_CLOSE_MESSAGE)
 
         self._close_code = code
         self._close_reason = reason
@@ -376,30 +377,29 @@ class WebSocketConnection:
                 await self._abort_websocket()
                 raise ConnectionClosed(self._close_code, self._close_reason) from None
 
-    async def _handle_accept_connection_event(self, event: Event):
+    async def _handle_accept_connection_event(self, event: AcceptConnection):
         self._connection_subprotocol = event.subprotocol
         self._handshake_headers = tuple(event.extra_headers)
         await self._open_handshake.set()
 
-    async def _handle_reject_connection_event(self, event: Event):
+    async def _handle_reject_connection_event(self, event: RejectConnection):
         self._reject_status = event.status_code
         self._reject_headers = tuple(event.headers)
         if not event.has_body:
             raise ConnectionRejected(self._reject_status, self._reject_headers, self._reject_body)
 
-    async def _handle_reject_data_event(self, event: Event):
+    async def _handle_reject_data_event(self, event: RejectData):
         self._reject_body += event.data
         if event.body_finished:
             raise ConnectionRejected(self._reject_status, self._reject_headers, self._reject_body)
 
-    async def _handle_close_connection_event(self, event: Event):
+    async def _handle_close_connection_event(self, event: CloseConnection):
         await anyio.sleep(0)
         if self.state is ConnectionState.REMOTE_CLOSING:
             await self._send(event.response())
-        await self._close_websocket(event.code, event.reason or None)
         await self._close_handshake.set()
 
-    async def _handle_message_event(self, event: Event):
+    async def _handle_message_event(self, event: Message):
         self._message_size += len(event.data)
         self._message_parts.append(event.data)
 
@@ -423,11 +423,11 @@ class WebSocketConnection:
 
             await self._event_queue.put(message)
 
-    async def _handle_ping_event(self, event: Event):
+    async def _handle_ping_event(self, event: Ping):
         logger.debug('%s pings with %r', self, event.payload)
         await self._send(event.response())
 
-    async def _handle_pong_event(self, event: Event):
+    async def _handle_pong_event(self, event: Pong):
         payload = bytes(event.payload)
         try:
             self._pings[payload]
@@ -436,7 +436,7 @@ class WebSocketConnection:
             return
 
         while self._pings:
-            key, event = self._pings.popitem(0)
+            key, event = self._pings.popitem(False)
             skipped = ' [skipped] ' if payload != key else ' '
             logger.debug('%s received pong %s%r', self, skipped, key)
             event.set()
