@@ -3,7 +3,7 @@
 This library implements [the WebSocket protocol](https://tools.ietf.org/html/rfc6455) based on the [Sans-IO library wsproto](https://github.com/python-hyper/wsproto).
 I/O is handled by the [anyio project](https://github.com/agronholm/anyio) which makes this library compatible to asyncio, trio and curio.
 
-[![Build Status](https://travis-ci.org/clamor-py/anysocks.svg?branch=master)](https://travis-ci.org/clamor-py/anysocks)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fclamor-py%2Fanysocks%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/clamor-py/anysocks/goto?ref=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9346c58f1ff2ab188c9a/maintainability)](https://codeclimate.com/github/clamor-py/anysocks/maintainability)
 [![CodeFactor](https://www.codefactor.io/repository/github/clamor-py/anysocks/badge)](https://www.codefactor.io/repository/github/clamor-py/anysocks)
 [![Documentation Status](https://readthedocs.org/projects/anysocks/badge/?version=latest)](https://anysocks.readthedocs.io/en/latest/?badge=latest)
