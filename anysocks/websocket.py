@@ -320,10 +320,10 @@ class WebSocketConnection:
             An optional string indicating why the connection was closed.
         """
 
-        logger.info('Closing connection to %s...', self.host)
-
         if self._closed:
             return
+
+        logger.info('Closing connection to %s...', self.host)
 
         self._closed = True
 
@@ -350,7 +350,8 @@ class WebSocketConnection:
         if self._close_code is None:
             await self._close_websocket(close_code)
 
-        self._reader_running = False
+        await self._close_stream()
+
         await self._close_handshake.set()
 
     async def _close_stream(self):
