@@ -8,6 +8,17 @@ indent_size = 4
 end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
+max_line_length = 100
+
+[*.{md,rst}]
+trim_trailing_whitespace = false
+
+[*.{toml,yml}]
+indent_size = 2
 
 [Makefile]
+indent_style = tab
+
+[*.bat]
+end_of_line = crlf
 indent_style = tab

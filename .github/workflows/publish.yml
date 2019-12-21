@@ -1,4 +1,4 @@
-name: Publish anysocks
+name: Publish anysocks to PyPI
 
 on:
   release:
@@ -9,8 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Publish a Python distribution to PyPI
-      uses: pypa/gh-action-pypi-publish@master
+    - name: Set up Python
+      uses: actions/setup-python@v1
       with:
-        user: ${{ secrets.PYPI_USER }}
-        password: ${{ secrets.PYPI_PASSWORD }}
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        python setup.py sdist bdist_wheel
+        twine upload dist/*
